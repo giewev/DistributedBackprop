@@ -1,28 +1,28 @@
 public class Matrix
 {
-	public double[][] connections;
+	public double[][] values;
 	public Matrix(int prevSize, int nextSize)
 	{
-		this.connections = new double[prevSize][nextSize];
+		this.values = new double[prevSize][nextSize];
 	}
 
 	public Matrix(double[] values)
 	{
-		this.connections = new double[1][values.length];
+		this.values = new double[1][values.length];
 		for (int i = 0; i < values.length; i++)
 		{
-			this.connections[0][i] = values[i];
+			this.values[0][i] = values[i];
 		}
 	}
 
 	public Matrix transpose()
 	{
-		Matrix t = new Matrix(this.connections[0].length, this.connections.length);
-		for (int i = 0; i < connections.length; i++)
+		Matrix t = new Matrix(this.values[0].length, this.values.length);
+		for (int i = 0; i < values.length; i++)
 		{
-			for (int j = 0; j < connections[0].length; j++)
+			for (int j = 0; j < values[0].length; j++)
 			{
-				t.connections[j][i] = this.connections[i][j];
+				t.values[j][i] = this.values[i][j];
 			}
 		}
 
@@ -31,23 +31,23 @@ public class Matrix
 
 	public Matrix multiply(Matrix right)
 	{
-		if (this.connections[0].length != right.connections.length)
+		if (this.values[0].length != right.values.length)
 		{
 			throw new IllegalArgumentException();
 		}
 
-		Matrix result = new Matrix(this.connections.length, right.connections[0].length);
-		for (int leftRow = 0; leftRow < this.connections.length; leftRow++)
+		Matrix result = new Matrix(this.values.length, right.values[0].length);
+		for (int leftRow = 0; leftRow < this.values.length; leftRow++)
 		{
-			for (int rightColumn = 0; rightColumn < right.connections[0].length; rightColumn++)
+			for (int rightColumn = 0; rightColumn < right.values[0].length; rightColumn++)
 			{
 				double total = 0;
-				for (int secondaryIndex = 0; secondaryIndex < this.connections[0].length; secondaryIndex++)
+				for (int secondaryIndex = 0; secondaryIndex < this.values[0].length; secondaryIndex++)
 				{
-					total += this.connections[leftRow][secondaryIndex] * right.connections[secondaryIndex][rightColumn];
+					total += this.values[leftRow][secondaryIndex] * right.values[secondaryIndex][rightColumn];
 				}
 
-				result.connections[leftRow][rightColumn] = total;
+				result.values[leftRow][rightColumn] = total;
 			}
 		}
 
@@ -56,18 +56,18 @@ public class Matrix
 
 	public Matrix minus(Matrix other)
 	{
-		if (this.connections.length != other.connections.length ||
-			this.connections[0].length != other.connections[0].length)
+		if (this.values.length != other.values.length ||
+			this.values[0].length != other.values[0].length)
 		{
 			throw new IllegalArgumentException();
 		}
 
-		Matrix result = new Matrix(this.connections.length, this.connections[0].length);
-		for (int row = 0; row < this.connections.length; row++)
+		Matrix result = new Matrix(this.values.length, this.values[0].length);
+		for (int row = 0; row < this.values.length; row++)
 		{
-			for (int col = 0; col < this.connections[0].length; col++)
+			for (int col = 0; col < this.values[0].length; col++)
 			{
-				result.connections[row][col] = this.connections[row][col] - other.connections[row][col];
+				result.values[row][col] = this.values[row][col] - other.values[row][col];
 			}
 		}
 
@@ -76,12 +76,12 @@ public class Matrix
 
 	public Matrix sigmoid()
 	{
-		Matrix result = new Matrix(this.connections.length, this.connections[0].length);
-		for (int i = 0; i < this.connections.length; i++)
+		Matrix result = new Matrix(this.values.length, this.values[0].length);
+		for (int i = 0; i < this.values.length; i++)
 		{
-			for (int j = 0; j < this.connections[0].length; j++)
+			for (int j = 0; j < this.values[0].length; j++)
 			{
-				result.connections[i][j] = sigmoidValue(this.connections[i][j]);
+				result.values[i][j] = sigmoidValue(this.values[i][j]);
 			}
 		}
 
@@ -90,7 +90,7 @@ public class Matrix
 
 	public int elementCount()
 	{
-		return this.connections.length * this.connections[0].length;
+		return this.values.length * this.values[0].length;
 	}
 
 	private static double sigmoidValue(double original)

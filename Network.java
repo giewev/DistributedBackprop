@@ -9,12 +9,12 @@ public class Network
 
 	public Matrix calculate(double[] inputs)
 	{
-		return calculateOutputs()[this.connections.length];
+		return calculateOutputs(inputs)[this.connections.length];
 	}
 
-	public WeightDelta[] backprop(double[] inputs, double[] targets);
+	public WeightDelta[] backprop(double[] inputs, double[] targets)
 	{
-		Matrix[] outputs = this.calculateOutputs();
+		Matrix[] outputs = this.calculateOutputs(inputs);
 		Matrix target = new Matrix(targets);
 		Matrix delta = outputs[this.connections.length].minus(target);
 		
@@ -23,7 +23,7 @@ public class Network
 		return results;
 	}
 
-	private Matrix[] calculateOutputs()
+	private Matrix[] calculateOutputs(double[] inputs)
 	{
 		Matrix[] outputs = new Matrix[this.connections.length + 1];
 		outputs[0] = new Matrix(inputs);
