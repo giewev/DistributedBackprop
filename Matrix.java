@@ -15,6 +15,11 @@ public class Matrix
 		}
 	}
 
+	public String dimensions()
+	{
+		return this.values.length + "x" + this.values[0].length;
+	}
+
 	public Matrix transpose()
 	{
 		Matrix t = new Matrix(this.values[0].length, this.values.length);
@@ -33,7 +38,7 @@ public class Matrix
 	{
 		if (this.values[0].length != right.values.length)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(this.values.length + "x" + this.values[0].length + " * " + right.values.length + "x" + right.values[0].length);
 		}
 
 		Matrix result = new Matrix(this.values.length, right.values[0].length);
@@ -52,6 +57,45 @@ public class Matrix
 		}
 
 		return result;
+	}
+
+	public Matrix flatMultiply(Matrix right)
+	{
+		Matrix result = new Matrix(1, this.values[0].length);
+		for (int i = 0; i < this.values[0].length; i++)
+		{
+			result.values[0][i] = this.values[0][i] * right.values[0][i];
+		}
+
+		return result;
+	}
+
+	public Matrix abs()
+	{
+		Matrix result = new Matrix(this.values.length, this.values[0].length);
+		for (int i = 0; i < this.values.length; i++)
+		{
+			for (int j = 0; j < this.values[0].length; j++)
+			{
+				result.values[i][j] = Math.abs(this.values[i][j]);
+			}
+		}
+
+		return result;
+	}
+
+	public double sum()
+	{
+		double total = 0;
+		for (int i = 0; i < this.values.length; i++)
+		{
+			for (int j = 0; j < this.values[0].length; j++)
+			{
+				total += this.values[i][j];
+			}
+		}
+
+		return total;
 	}
 
 	public Matrix minus(Matrix other)
@@ -88,9 +132,64 @@ public class Matrix
 		return result;
 	}
 
+	public Matrix sigmoidDerivative()
+	{
+		Matrix result = new Matrix(this.values.length, this.values[0].length);
+		for (int i = 0; i < this.values.length; i++)
+		{
+			for (int j = 0; j < this.values[0].length; j++)
+			{
+				result.values[i][j] = this.values[i][j] * (1 - this.values[i][j]);
+			}
+		}
+
+		return result;
+	}
+
 	public int elementCount()
 	{
 		return this.values.length * this.values[0].length;
+	}
+
+	public void randomize()
+	{
+		for (int i = 0; i < this.values.length; i++)
+		{
+			for (int j = 0; j < this.values[0].length; j++)
+			{
+				this.values[i][j] = Math.random() - 0.5;
+			}
+		}
+	}
+
+	public Matrix withBiasColumn()
+	{
+		Matrix result = new Matrix(this.values.length, this.values[0].length + 1);
+		for (int i = 0; i < this.values.length; i++)
+		{
+			for (int j = 0; j < this.values[0].length; j++)
+			{
+				result.values[i][j] = this.values[i][j];
+			}
+
+			result.values[i][this.values[0].length] = 1;
+		}
+
+		return result;
+	}
+
+	public Matrix withoutBiasColumn()
+	{
+		Matrix result = new Matrix(this.values.length, this.values[0].length - 1);
+		for (int i = 0; i < result.values.length; i++)
+		{
+			for (int j = 0; j < result.values[0].length; j++)
+			{
+				result.values[i][j] = this.values[i][j];
+			}
+		}
+
+		return result;
 	}
 
 	private static double sigmoidValue(double original)
