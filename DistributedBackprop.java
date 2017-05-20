@@ -14,7 +14,7 @@ public class DistributedBackprop
 
 		Network xorNetwork = new Network(2, 2, 1);
 
-		for (int epoch = 0; epoch < 5001; epoch++)
+		for (int epoch = 0; epoch < 100001; epoch++)
 		{
 			for (int i = 0; i < 4; i++)
 			{

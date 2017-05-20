@@ -1,7 +1,7 @@
 public class Network
 {
 	Matrix[] connections;
-	private double learningRate = -1;
+	private double learningRate = -0.5;
 
 	public Network(int... nodeCounts)
 	{
