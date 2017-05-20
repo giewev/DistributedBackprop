@@ -1,6 +1,32 @@
 public class DistributedBackprop
 {
+	public static class BatchLoader
+
+	extends Mapper<Network, Text, Network, DataSample>
+	{
+		public void map(Network key, Text value, Context context) throws IOException, InterruptedException 
+		{
+			StringTokenizer itr = new StringTokenizer(value.toString(), ",");
+			while (itr.hasMoreTokens()) 
+			{
+				DataSample nextSample = new DataSample();
+				nextSample.inputs = new double[2];
+				nextSample.outputs = new double[1];
+				nextSample.inputs[0] = Integer.parseInt(itr.nextToken());
+				nextSample.inputs[1] = Integer.parseInt(itr.nextToken());
+				nextSample.outputs[0] = Integer.parseInt(itr.nextToken());
+
+				context.write(key, nextSample);
+			}
+		}
+	}
+
 	public static void main(String[] args)
+	{
+		
+	}
+
+	private static void runLocally()
 	{
 		double[][] inputs = {	{0,0},
 								{0,1},
